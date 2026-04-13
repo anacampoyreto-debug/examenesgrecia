@@ -87,6 +87,33 @@ button{
 
 <body>
 
+<!-- BARRA DE NAVEGACIÓN AÑADIDA -->
+<div style="
+position:sticky;
+top:0;
+z-index:999;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+padding:10px 14px;
+background:rgba(255,255,255,0.96);
+border-bottom:1px solid var(--line);
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+">
+
+  <button type="button" onclick="goHome()" style="background:#8b5cf6;">
+    🏠 Inicio site
+  </button>
+
+  <button type="button" onclick="goGrecia()" style="background:#5aa9e6;">
+    🏛️ Grecia
+  </button>
+
+  <button type="button" onclick="goBack()" style="background:#d44f5d;">
+    ⬅ Volver
+  </button>
+</div>
+
 <div class="wrap">
 
 <h1>Exámenes cortos de Grecia</h1>
@@ -218,7 +245,7 @@ function checkExam(){
   errors = [];
 
   currentQuestions.forEach((q, i) => {
-    let selected = document.querySelector(`input[name="q${i}"]:checked`);
+    let selected = document.querySelector(\`input[name="q\${i}"]:checked\`);
     let val = selected ? selected.value : null;
 
     if (val === q.a) {
@@ -228,7 +255,7 @@ function checkExam(){
     }
   });
 
-  let msg = `Resultado: ${score}/${currentQuestions.length}`;
+  let msg = \`Resultado: \${score}/\${currentQuestions.length}\`;
 
   if (mode === "practice") {
     if (errors.length > 0) {
@@ -245,6 +272,23 @@ function checkExam(){
 
   document.getElementById("result").innerHTML = msg;
   window.scrollTo(0, document.body.scrollHeight);
+}
+
+/* FUNCIONES DE NAVEGACIÓN AÑADIDAS */
+function goHome(){
+  window.top.location.href = "https://sites.google.com/tu-site";
+}
+
+function goGrecia(){
+  window.top.location.href = "https://sites.google.com/tu-site/grecia";
+}
+
+function goBack(){
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.top.location.href = "https://sites.google.com/tu-site/grecia";
+  }
 }
 </script>
 
