@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -16,17 +16,33 @@
   --green:#22a06b;
   --red:#d44f5d;
   --soft:#eef6ff;
+  --gold:#f4b942;
 }
 
+*{box-sizing:border-box}
+
 body{
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   margin:0;
   background:var(--bg);
   color:var(--ink);
 }
 
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:999;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:12px 20px;
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+
 .wrap{
-  width:90%;
+  width:min(92%, 1200px);
   margin:auto;
   margin-top:20px;
   margin-bottom:40px;
@@ -34,13 +50,15 @@ body{
 
 h1{
   text-align:center;
+  margin-top:18px;
+  font-size:clamp(30px, 4vw, 48px);
 }
 
 .panel{
   background:white;
-  padding:15px;
-  border-radius:15px;
-  margin-bottom:15px;
+  padding:18px;
+  border-radius:18px;
+  margin-bottom:18px;
   border:1px solid var(--line);
 }
 
@@ -53,97 +71,155 @@ button{
   background:var(--blue);
   color:white;
   margin:4px;
+  transition:transform .08s ease, opacity .2s ease, box-shadow .2s ease;
+  box-shadow:0 4px 10px rgba(90,169,230,.25);
+}
+
+button:hover{
+  opacity:.96;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+.btn-violet{
+  background:var(--violet);
+  box-shadow:0 4px 10px rgba(139,92,246,.25);
+}
+
+.btn-red{
+  background:var(--red);
+  box-shadow:0 4px 10px rgba(212,79,93,.25);
+}
+
+.btn-green{
+  background:var(--green);
+  box-shadow:0 4px 10px rgba(34,160,107,.25);
+}
+
+.btn-gold{
+  background:var(--gold);
+  color:#223244;
+  box-shadow:0 4px 10px rgba(244,185,66,.25);
 }
 
 .btn-sec{
   background:white;
   color:var(--blue);
   border:1px solid var(--line);
+  box-shadow:none;
 }
 
 .question{
   margin-top:15px;
-  padding:12px;
+  padding:16px;
   border:1px solid var(--line);
-  border-radius:12px;
+  border-radius:16px;
   background:white;
+}
+
+.question p{
+  margin-top:0;
+  font-size:18px;
+}
+
+.question label{
+  display:block;
+  margin:10px 0;
+  font-size:16px;
+  cursor:pointer;
 }
 
 .result{
   margin-top:15px;
-  font-weight:bold;
   background:white;
-  padding:15px;
-  border-radius:15px;
+  padding:18px;
+  border-radius:18px;
   border:1px solid var(--line);
-}
-
-.topbar{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  padding:12px 20px;
-  background:white;
-  border-bottom:1px solid var(--line);
-  box-shadow:0 2px 8px rgba(0,0,0,0.06);
-}
-
-.linkbtn{
-  display:inline-block;
-  padding:10px 15px;
-  border-radius:20px;
-  background:var(--violet);
-  color:white;
-  text-decoration:none;
-  font-weight:bold;
-  margin:4px;
-}
-
-.linkbtn.blue{
-  background:var(--blue);
+  line-height:1.7;
 }
 
 .correct{color:green}
 .incorrect{color:red}
 .hidden{display:none}
+
+.fade-in{
+  animation:fadeIn .5s ease;
+}
+
+.pop{
+  animation:pop .35s ease;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:bold;
+  margin:6px 8px 0 0;
+  background:var(--soft);
+  border:1px solid var(--line);
+}
+
+.note{
+  font-size:15px;
+  color:#4b5c70;
+}
+
+.finalBox{
+  margin-top:14px;
+  padding:16px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#f7fbff,#eef6ff);
+  border:1px solid var(--line);
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes pop{
+  0%{transform:scale(.96);opacity:.7}
+  100%{transform:scale(1);opacity:1}
+}
 </style>
 </head>
 
 <body>
 
 <div class="topbar">
-  <button onclick="goStart()">🔄 Volver al inicio</button>
-
-  <a class="linkbtn blue" href="https://sites.google.com/view/TU-SITE" target="_top">
-    🏠 Volver a la site
-  </a>
+  <button type="button" onclick="goStart()">🔄 Volver al inicio</button>
+  <button type="button" class="btn-violet" onclick="goBack()">⬅ Volver</button>
 </div>
 
 <div class="wrap">
 
-<h1>Exámenes cortos de Grecia</h1>
+  <h1>Exámenes cortos de Grecia</h1>
 
-<div class="panel">
-  <h3>Modo</h3>
-  <button onclick="setMode('practice')">Modo práctica</button>
-  <button onclick="setMode('exam')">Modo examen</button>
-  <p id="modeText">Modo actual: práctica</p>
-</div>
+  <div class="panel">
+    <h3>Modo</h3>
+    <button type="button" onclick="setMode('practice')">Modo práctica</button>
+    <button type="button" onclick="setMode('exam')">Modo examen</button>
+    <p id="modeText">Modo actual: práctica</p>
+    <p class="note">En práctica verás los fallos. En examen solo verás la nota final.</p>
+  </div>
 
-<div class="panel">
-  <h3>Selecciona examen</h3>
+  <div class="panel">
+    <h3>Selecciona examen</h3>
 
-  <button onclick="startExam(1)">Examen 1 · Polis y estructura</button>
-  <button onclick="startExam(2)">Examen 2 · Mapas y Hélade</button>
-  <button onclick="startExam(3)">Examen 3 · Atenas vs Esparta</button>
-  <button onclick="startExam(4)">Examen 4 · Línea histórica</button>
-  <button onclick="startExam(5)">Examen 5 · Alejandro Magno</button>
-  <button onclick="startExam(6)">Examen FINAL MIX</button>
-</div>
+    <button type="button" onclick="startExam(1)">Examen 1 · Polis y estructura</button>
+    <button type="button" onclick="startExam(2)">Examen 2 · Mapas y Hélade</button>
+    <button type="button" onclick="startExam(3)">Examen 3 · Atenas vs Esparta</button>
+    <button type="button" onclick="startExam(4)">Examen 4 · Línea histórica</button>
+    <button type="button" onclick="startExam(5)">Examen 5 · Alejandro Magno</button>
+    <button type="button" onclick="startExam(6)">Examen FINAL MIX</button>
+  </div>
 
-<div id="examContainer"></div>
+  <div id="examContainer"></div>
 
-<div class="result" id="result"></div>
+  <div class="result hidden" id="result"></div>
 
 </div>
 
@@ -151,23 +227,33 @@ button{
 let mode = "practice";
 let currentQuestions = [];
 let errors = [];
+let currentExamNumber = null;
 
 function setMode(m){
   mode = m;
-  document.getElementById("modeText").innerText = "Modo actual: " + m;
+  document.getElementById("modeText").innerText = "Modo actual: " + (m === "practice" ? "práctica" : "examen");
 }
 
 function goStart(){
   location.reload();
 }
 
+function goBack(){
+  if(window.history.length > 1){
+    history.back();
+  }else{
+    location.reload();
+  }
+}
+
 function startExam(n){
+  currentExamNumber = n;
   errors = [];
   document.getElementById("result").innerHTML = "";
+  document.getElementById("result").classList.add("hidden");
   document.getElementById("examContainer").innerHTML = "";
 
   const exams = {
-
     1:[
       {q:"¿Qué es una polis?",a:"ciudad",o:["ciudad","barco","montaña"]},
       {q:"¿Qué parte es la zona alta?",a:"acropolis",o:["agora","acropolis","puerto"]},
@@ -221,7 +307,7 @@ function startExam(n){
 
   currentQuestions = shuffle([...exams[n]]);
   renderExam();
-  window.scrollTo(0, 0);
+  window.scrollTo({top:0, behavior:"smooth"});
 }
 
 function shuffle(arr){
@@ -231,31 +317,45 @@ function shuffle(arr){
 function renderExam(){
   let html = "";
 
-  currentQuestions.forEach((q,i) => {
-    html += `<div class="question">
-      <p>${i+1}. ${q.q}</p>`;
+  currentQuestions.forEach((q, i) => {
+    html += `<div class="question fade-in">
+      <p>${i + 1}. ${q.q}</p>`;
 
     q.o.forEach(opt => {
       html += `
       <label>
         <input type="radio" name="q${i}" value="${opt}"> ${opt}
-      </label><br>`;
+      </label>`;
     });
 
     html += `</div>`;
   });
 
-  html += `<br><button onclick="checkExam()">Corregir</button>`;
+  html += `
+    <div class="panel pop">
+      <button type="button" class="btn-green" onclick="checkExam()">✅ Corregir</button>
+      <button type="button" class="btn-gold" onclick="finishExam()">🏁 Terminar examen</button>
+    </div>
+  `;
 
   document.getElementById("examContainer").innerHTML = html;
 }
 
-function checkExam(){
+function countAnswered(){
+  let answered = 0;
+  currentQuestions.forEach((q, i) => {
+    let selected = document.querySelector('input[name="q' + i + '"]:checked');
+    if(selected) answered++;
+  });
+  return answered;
+}
+
+function checkExam(showFinishBox = false){
   let score = 0;
   errors = [];
 
-  currentQuestions.forEach((q,i) => {
-    let selected = document.querySelector(`input[name="q${i}"]:checked`);
+  currentQuestions.forEach((q, i) => {
+    let selected = document.querySelector('input[name="q' + i + '"]:checked');
     let val = selected ? selected.value : null;
 
     if(val === q.a){
@@ -265,27 +365,69 @@ function checkExam(){
     }
   });
 
-  let msg = `Resultado: ${score}/${currentQuestions.length}`;
+  let result = document.getElementById("result");
+  let msg = `<div class="pop"><span class="badge">Resultado: ${score}/${currentQuestions.length}</span>`;
+
+  if(score === currentQuestions.length){
+    msg += `<span class="badge" style="background:#ecfdf5;border-color:#b7ebcc;color:#166534;">🌟 Perfecto</span>`;
+  }else if(score >= Math.ceil(currentQuestions.length * 0.7)){
+    msg += `<span class="badge" style="background:#fff7ed;border-color:#f5d2a4;color:#9a3412;">💪 Muy bien</span>`;
+  }else{
+    msg += `<span class="badge" style="background:#fef2f2;border-color:#f3b1b8;color:#991b1b;">📌 Hay que repasar</span>`;
+  }
 
   if(mode === "practice"){
     if(errors.length > 0){
-      msg += "<br><br>Fallos:<br>" + errors.join("<br>");
+      msg += `<div class="finalBox"><strong>Fallos:</strong><br>${errors.join("<br>")}</div>`;
     }else{
-      msg += "<br><br>¡Perfecto! No has tenido fallos.";
+      msg += `<div class="finalBox">¡Perfecto! No has tenido fallos.</div>`;
     }
   }
 
-  msg += `
-    <br><br>
-    <button onclick="goStart()">🔄 Volver al inicio</button>
-    <br><br>
-    <a href="https://sites.google.com/view/TU-SITE" target="_top" class="linkbtn">
-      🏠 Volver a la site
-    </a>
-  `;
+  if(showFinishBox){
+    msg += getFinalButtons(score);
+  }
 
-  document.getElementById("result").innerHTML = msg;
-  window.scrollTo(0, document.body.scrollHeight);
+  msg += `</div>`;
+
+  result.innerHTML = msg;
+  result.classList.remove("hidden");
+  result.classList.add("fade-in");
+
+  window.scrollTo({top:document.body.scrollHeight, behavior:"smooth"});
+}
+
+function finishExam(){
+  const answered = countAnswered();
+
+  if(answered < currentQuestions.length){
+    const continueAnyway = confirm(
+      `Has respondido ${answered} de ${currentQuestions.length} preguntas. ¿Quieres terminar igualmente?`
+    );
+    if(!continueAnyway) return;
+  }
+
+  checkExam(true);
+}
+
+function getFinalButtons(score){
+  let feedback = "";
+
+  if(score === currentQuestions.length){
+    feedback = "🏆 Has cerrado este examen con un nivel excelente.";
+  }else if(score >= Math.ceil(currentQuestions.length * 0.7)){
+    feedback = "👏 Buen trabajo. Un repaso corto y lo bordas.";
+  }else{
+    feedback = "📘 Terminado. Ahora toca revisar los fallos con calma.";
+  }
+
+  return `
+    <div class="finalBox pop">
+      <p><strong>${feedback}</strong></p>
+      <button type="button" onclick="goStart()">🔄 Repetir / volver al inicio</button>
+      <button type="button" class="btn-violet" onclick="goBack()">⬅ Volver</button>
+    </div>
+  `;
 }
 </script>
 
