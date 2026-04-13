@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -19,7 +19,7 @@
 }
 
 body{
-  font-family:Arial, sans-serif;
+  font-family:Arial;
   margin:0;
   background:var(--bg);
   color:var(--ink);
@@ -78,6 +78,31 @@ button{
   border:1px solid var(--line);
 }
 
+.topbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:12px 20px;
+  background:white;
+  border-bottom:1px solid var(--line);
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+
+.linkbtn{
+  display:inline-block;
+  padding:10px 15px;
+  border-radius:20px;
+  background:var(--violet);
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  margin:4px;
+}
+
+.linkbtn.blue{
+  background:var(--blue);
+}
+
 .correct{color:green}
 .incorrect{color:red}
 .hidden{display:none}
@@ -86,21 +111,12 @@ button{
 
 <body>
 
-<div style="
-position:sticky;
-top:0;
-z-index:999;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-padding:10px 14px;
-background:rgba(255,255,255,0.96);
-border-bottom:1px solid var(--line);
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
-">
-  <button type="button" onclick="goHome()" style="background:#8b5cf6;">🏠 Inicio site</button>
-  <button type="button" onclick="goGrecia()" style="background:#5aa9e6;">🏛️ Grecia</button>
-  <button type="button" onclick="goBack()" style="background:#d44f5d;">⬅ Volver</button>
+<div class="topbar">
+  <button onclick="goStart()">🔄 Volver al inicio</button>
+
+  <a class="linkbtn blue" href="https://sites.google.com/view/TU-SITE" target="_top">
+    🏠 Volver a la site
+  </a>
 </div>
 
 <div class="wrap">
@@ -109,23 +125,24 @@ box-shadow:0 4px 12px rgba(0,0,0,0.08);
 
 <div class="panel">
   <h3>Modo</h3>
-  <button type="button" onclick="setMode('practice')">Modo práctica</button>
-  <button type="button" onclick="setMode('exam')">Modo examen</button>
+  <button onclick="setMode('practice')">Modo práctica</button>
+  <button onclick="setMode('exam')">Modo examen</button>
   <p id="modeText">Modo actual: práctica</p>
 </div>
 
 <div class="panel">
   <h3>Selecciona examen</h3>
 
-  <button type="button" onclick="startExam(1)">Examen 1 · Polis y estructura</button>
-  <button type="button" onclick="startExam(2)">Examen 2 · Mapas y Hélade</button>
-  <button type="button" onclick="startExam(3)">Examen 3 · Atenas vs Esparta</button>
-  <button type="button" onclick="startExam(4)">Examen 4 · Línea histórica</button>
-  <button type="button" onclick="startExam(5)">Examen 5 · Alejandro Magno</button>
-  <button type="button" onclick="startExam(6)">Examen FINAL MIX</button>
+  <button onclick="startExam(1)">Examen 1 · Polis y estructura</button>
+  <button onclick="startExam(2)">Examen 2 · Mapas y Hélade</button>
+  <button onclick="startExam(3)">Examen 3 · Atenas vs Esparta</button>
+  <button onclick="startExam(4)">Examen 4 · Línea histórica</button>
+  <button onclick="startExam(5)">Examen 5 · Alejandro Magno</button>
+  <button onclick="startExam(6)">Examen FINAL MIX</button>
 </div>
 
 <div id="examContainer"></div>
+
 <div class="result" id="result"></div>
 
 </div>
@@ -140,12 +157,17 @@ function setMode(m){
   document.getElementById("modeText").innerText = "Modo actual: " + m;
 }
 
+function goStart(){
+  location.reload();
+}
+
 function startExam(n){
   errors = [];
   document.getElementById("result").innerHTML = "";
   document.getElementById("examContainer").innerHTML = "";
 
   const exams = {
+
     1:[
       {q:"¿Qué es una polis?",a:"ciudad",o:["ciudad","barco","montaña"]},
       {q:"¿Qué parte es la zona alta?",a:"acropolis",o:["agora","acropolis","puerto"]},
@@ -153,6 +175,7 @@ function startExam(n){
       {q:"¿Qué era el ágora?",a:"plaza",o:["plaza","templo","campo"]},
       {q:"Los campos servían para...",a:"alimentos",o:["alimentos","guerra","arte"]}
     ],
+
     2:[
       {q:"¿Qué era la Hélade?",a:"grecia",o:["roma","grecia","egipto"]},
       {q:"¿Dónde está Grecia hoy?",a:"europa",o:["asia","africa","europa"]},
@@ -160,6 +183,7 @@ function startExam(n){
       {q:"¿El mar ayudaba a...?",a:"comercio",o:["comercio","guerra","agricultura"]},
       {q:"Las polis estaban...",a:"separadas",o:["unidas","separadas","desaparecidas"]}
     ],
+
     3:[
       {q:"Atenas destaca por...",a:"democracia",o:["guerra","democracia","obediencia"]},
       {q:"Esparta destaca por...",a:"ejercito",o:["arte","ejercito","comercio"]},
@@ -167,6 +191,7 @@ function startExam(n){
       {q:"¿Qué es la democracia?",a:"gobierno",o:["gobierno","guerra","arte"]},
       {q:"¿Qué polis es más cultural?",a:"atenas",o:["atenas","esparta","ninguna"]}
     ],
+
     4:[
       {q:"Primero ocurre...",a:"persas",o:["persas","alejandro","roma"]},
       {q:"Después Atenas crea...",a:"delos",o:["roma","delos","imperio"]},
@@ -174,6 +199,7 @@ function startExam(n){
       {q:"Gana...",a:"esparta",o:["atenas","esparta","persia"]},
       {q:"Después Grecia queda...",a:"debil",o:["fuerte","debil","grande"]}
     ],
+
     5:[
       {q:"Padre de Alejandro:",a:"filipo",o:["pericles","filipo","zeus"]},
       {q:"Alejandro conquista...",a:"mucho",o:["nada","mucho","roma"]},
@@ -181,6 +207,7 @@ function startExam(n){
       {q:"Difunde cultura...",a:"griega",o:["romana","griega","egipcia"]},
       {q:"Muere joven:",a:"si",o:["si","no","viejo"]}
     ],
+
     6:[
       {q:"¿Qué es una polis?",a:"ciudad",o:["ciudad","guerra","rey"]},
       {q:"¿Acrópolis?",a:"alto",o:["alto","mar","campo"]},
@@ -204,9 +231,9 @@ function shuffle(arr){
 function renderExam(){
   let html = "";
 
-  currentQuestions.forEach((q, i) => {
+  currentQuestions.forEach((q,i) => {
     html += `<div class="question">
-      <p>${i + 1}. ${q.q}</p>`;
+      <p>${i+1}. ${q.q}</p>`;
 
     q.o.forEach(opt => {
       html += `
@@ -218,7 +245,8 @@ function renderExam(){
     html += `</div>`;
   });
 
-  html += `<br><button type="button" onclick="checkExam()">Corregir</button>`;
+  html += `<br><button onclick="checkExam()">Corregir</button>`;
+
   document.getElementById("examContainer").innerHTML = html;
 }
 
@@ -226,47 +254,38 @@ function checkExam(){
   let score = 0;
   errors = [];
 
-  currentQuestions.forEach((q, i) => {
+  currentQuestions.forEach((q,i) => {
     let selected = document.querySelector(`input[name="q${i}"]:checked`);
     let val = selected ? selected.value : null;
 
-    if (val === q.a) {
+    if(val === q.a){
       score++;
-    } else {
+    }else{
       errors.push(q.q);
     }
   });
 
   let msg = `Resultado: ${score}/${currentQuestions.length}`;
 
-  if (mode === "practice") {
-    if (errors.length > 0) {
+  if(mode === "practice"){
+    if(errors.length > 0){
       msg += "<br><br>Fallos:<br>" + errors.join("<br>");
-    } else {
+    }else{
       msg += "<br><br>¡Perfecto! No has tenido fallos.";
     }
   }
 
-  msg += `<br><br><button type="button" onclick="location.reload()">Volver al inicio</button>`;
+  msg += `
+    <br><br>
+    <button onclick="goStart()">🔄 Volver al inicio</button>
+    <br><br>
+    <a href="https://sites.google.com/view/TU-SITE" target="_top" class="linkbtn">
+      🏠 Volver a la site
+    </a>
+  `;
 
   document.getElementById("result").innerHTML = msg;
   window.scrollTo(0, document.body.scrollHeight);
-}
-
-function goHome(){
-  window.location.href = "https://sites.google.com/view/tu-site";
-}
-
-function goGrecia(){
-  window.location.href = "https://sites.google.com/view/tu-site/grecia";
-}
-
-function goBack(){
-  if (window.history.length > 1) {
-    window.history.back();
-  } else {
-    alert("No hay página anterior en el historial.");
-  }
 }
 </script>
 
