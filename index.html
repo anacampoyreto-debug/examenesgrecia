@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exámenes de Grecia · Nivel PRO</title>
+
+<style>
+:root{
+  --bg:#f7fbff;
+  --card:#ffffff;
+  --ink:#223244;
+  --line:#dbe6f1;
+  --blue:#5aa9e6;
+  --violet:#8b5cf6;
+  --green:#22a06b;
+  --red:#d44f5d;
+  --soft:#eef6ff;
+}
+
+body{
+  font-family:Arial;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.wrap{
+  width:90%;
+  margin:auto;
+  margin-top:20px;
+}
+
+h1{
+  text-align:center;
+}
+
+.panel{
+  background:white;
+  padding:15px;
+  border-radius:15px;
+  margin-bottom:15px;
+  border:1px solid var(--line);
+}
+
+button{
+  padding:10px 15px;
+  border-radius:20px;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+  background:var(--blue);
+  color:white;
+}
+
+.btn-sec{
+  background:white;
+  color:var(--blue);
+  border:1px solid var(--line);
+}
+
+.question{
+  margin-top:15px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:white;
+}
+
+.result{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.correct{color:green}
+.incorrect{color:red}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<h1>Exámenes cortos de Grecia</h1>
+
+<div class="panel">
+<h3>Modo</h3>
+<button onclick="setMode('practice')">Modo práctica</button>
+<button onclick="setMode('exam')">Modo examen</button>
+<p id="modeText">Modo actual: práctica</p>
+</div>
+
+<div class="panel">
+<h3>Selecciona examen</h3>
+
+<button onclick="startExam(1)">Examen 1 · Polis y estructura</button>
+<button onclick="startExam(2)">Examen 2 · Mapas y Hélade</button>
+<button onclick="startExam(3)">Examen 3 · Atenas vs Esparta</button>
+<button onclick="startExam(4)">Examen 4 · Línea histórica</button>
+<button onclick="startExam(5)">Examen 5 · Alejandro Magno</button>
+<button onclick="startExam(6)">Examen FINAL MIX</button>
+
+</div>
+
+<div id="examContainer"></div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+let mode = "practice"
+let currentQuestions = []
+let errors = []
+
+function setMode(m){
+  mode = m
+  document.getElementById("modeText").innerText = "Modo actual: " + m
+}
+
+function startExam(n){
+
+errors = []
+document.getElementById("result").innerHTML = ""
+
+const exams = {
+
+1:[
+{q:"¿Qué es una polis?",a:"ciudad",o:["ciudad","barco","montaña"]},
+{q:"¿Qué parte es la zona alta?",a:"acropolis",o:["agora","acropolis","puerto"]},
+{q:"¿Para qué servían las murallas?",a:"defender",o:["decorar","defender","comer"]},
+{q:"¿Qué era el ágora?",a:"plaza",o:["plaza","templo","campo"]},
+{q:"Los campos servían para...",a:"alimentos",o:["alimentos","guerra","arte"]}
+],
+
+2:[
+{q:"¿Qué era la Hélade?",a:"grecia",o:["roma","grecia","egipto"]},
+{q:"¿Dónde está Grecia hoy?",a:"europa",o:["asia","africa","europa"]},
+{q:"¿Qué polis estaba cerca del mar?",a:"atenas",o:["esparta","atenas","ninguna"]},
+{q:"¿El mar ayudaba a...?",a:"comercio",o:["comercio","guerra","agricultura"]},
+{q:"Las polis estaban...",a:"separadas",o:["unidas","separadas","desaparecidas"]}
+],
+
+3:[
+{q:"Atenas destaca por...",a:"democracia",o:["guerra","democracia","obediencia"]},
+{q:"Esparta destaca por...",a:"ejercito",o:["arte","ejercito","comercio"]},
+{q:"¿Quién gana la guerra?",a:"esparta",o:["atenas","esparta","roma"]},
+{q:"¿Qué es la democracia?",a:"gobierno",o:["gobierno","guerra","arte"]},
+{q:"¿Qué polis es más cultural?",a:"atenas",o:["atenas","esparta","ninguna"]}
+],
+
+4:[
+{q:"Primero ocurre...",a:"persas",o:["persas","alejandro","roma"]},
+{q:"Después Atenas crea...",a:"delos",o:["roma","delos","imperio"]},
+{q:"Luego ocurre...",a:"peloponeso",o:["peloponeso","troya","punica"]},
+{q:"Gana...",a:"esparta",o:["atenas","esparta","persia"]},
+{q:"Después Grecia queda...",a:"debil",o:["fuerte","debil","grande"]}
+],
+
+5:[
+{q:"Padre de Alejandro:",a:"filipo",o:["pericles","filipo","zeus"]},
+{q:"Alejandro conquista...",a:"mucho",o:["nada","mucho","roma"]},
+{q:"Llega hasta...",a:"india",o:["francia","india","china"]},
+{q:"Difunde cultura...",a:"griega",o:["romana","griega","egipcia"]},
+{q:"Muere joven:",a:"si",o:["si","no","viejo"]}
+],
+
+6:[
+{q:"¿Qué es una polis?",a:"ciudad",o:["ciudad","guerra","rey"]},
+{q:"¿Acrópolis?",a:"alto",o:["alto","mar","campo"]},
+{q:"Atenas:",a:"democracia",o:["ejercito","democracia","campo"]},
+{q:"Esparta:",a:"guerra",o:["arte","guerra","comercio"]},
+{q:"Guerra:",a:"peloponeso",o:["troya","peloponeso","punica"]},
+{q:"Grecia queda:",a:"debil",o:["fuerte","debil","rica"]},
+{q:"Alejandro:",a:"imperio",o:["imperio","aldea","polis"]}
+]
+
+}
+
+currentQuestions = shuffle(exams[n])
+renderExam()
+
+}
+
+function shuffle(arr){
+return arr.sort(()=>Math.random()-0.5)
+}
+
+function renderExam(){
+
+let html = ""
+
+currentQuestions.forEach((q,i)=>{
+
+html += `<div class="question">
+<p>${i+1}. ${q.q}</p>`
+
+q.o.forEach(opt=>{
+html += `
+<label>
+<input type="radio" name="q${i}" value="${opt}"> ${opt}
+</label><br>`
+})
+
+html += `</div>`
+})
+
+html += `<br><button onclick="checkExam()">Corregir</button>`
+
+document.getElementById("examContainer").innerHTML = html
+
+}
+
+function checkExam(){
+
+let score = 0
+errors = []
+
+currentQuestions.forEach((q,i)=>{
+let val = document.querySelector(`input[name="q${i}"]:checked`)?.value
+
+if(val === q.a){
+score++
+}else{
+errors.push(q.q)
+}
+})
+
+let msg = `Resultado: ${score}/${currentQuestions.length}`
+
+if(mode === "practice"){
+msg += "<br><br>Fallos:<br>" + errors.join("<br>")
+}
+
+document.getElementById("result").innerHTML = msg
+
+}
+
+</script>
+
+</body>
+</html>
